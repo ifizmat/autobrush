@@ -7,6 +7,8 @@ gearbox_thickness = 25;
 gearbox_wall = 5;
 bearing_d = 10;
 
+cap_depth = gear_height/2 - bearing_d/2  + bearing_d/4; 
+
 gearbox();
 
 //translate([-40, 0, 0])
@@ -14,14 +16,25 @@ gearbox();
 //cap();
 
 
+module cap_kit() {
+    translate([gearbox_thickness/2, -gear_len/2 + bearing_d, gear_height/2 - cap_depth/2])
+    cap();
+
+    mirror([1, 0, 0])
+    translate([gearbox_thickness/2, -gear_len/2 + bearing_d, gear_height/2 - cap_depth/2])
+    cap();
+}
+
 // cap
 module cap() {
-    cube([gearbox_wall, bearing_d, bearing_d], true);
-    translate([0, bearing_d/2, 0])
+  difference() {
+    cube([gearbox_wall, bearing_d - 1, cap_depth], true);
     cap_hole();
+  }      
 }
 
 module cap_hole() {
+    translate([0, 0, -bearing_d/2 - cap_depth/2 + bearing_d/4])
     rotate([0, 90, 0])
     cylinder(h = 2*gearbox_wall, d = bearing_d, $fn = 32, center = true);
 }
@@ -62,7 +75,7 @@ module gearbox() {
     translate([gearbox_thickness/2, 0, 0])
     //gearbox_wall();
     gearbox_wall_kit();
-    cap();
+    cap_kit();
     mirror([1, 0, 0])
     translate([gearbox_thickness/2, 0, 0])
     //gearbox_wall();
