@@ -1,6 +1,10 @@
 // brush automata
 // belt gear
 // worm gear, transmission
+
+use <servo_holder.scad>
+use <sg90.scad>
+
 gear_len = 80;
 gear_height = 18;
 gearbox_thickness = 25;
@@ -10,8 +14,12 @@ bearing_d = 10;
 cap_depth = gear_height/2 - bearing_d/2  + bearing_d/4; 
 cap_width = bearing_d - 1;
 
-gearbox();
-
+//gearbox();
+//translate([-gearbox_thickness, gear_len/2 + 10, 0])
+translate([-gearbox_thickness, 0, 0])
+rotate([0, -90, 180])
+sg90();
+holder();
 //translate([-40, 0, 0])
 //gearbox_wall_kit();
 //cap_kit();
