@@ -8,20 +8,27 @@ use <sg90.scad>
 gear_len = 80;
 gear_height = 18;
 gearbox_thickness = 25;
+holder_thickness = 3;
 gearbox_wall = 5;
 bearing_d = 10;
 
 cap_depth = gear_height/2 - bearing_d/2  + bearing_d/4; 
 cap_width = bearing_d - 1;
+d_screw_m3 = 3.6+0.3;
+
 
 gearbox();
-translate([0, gear_len/2 + 10, 0])
 
+translate([-5, gear_len/2 + 6.6, 0])
 servo_box();
 
 //translate([-40, 0, 0])
 //gearbox_wall_kit();
+//servo_holes();
 //cap_kit();
+
+// Servo holder
+
 
 module cap_kit() {
     translate([gearbox_thickness/2, 0, 0])
@@ -57,13 +64,15 @@ module gearbox_wall_kit() {
     }
 }
 
-
 module holes_kit() {
+// Servo holder
+    translate([0, gear_len/2 - d_screw_m3, 0])    
+    servo_holes();
 // servo
-    translate([0, gear_len/2 - bearing_d, 0])
-    bearing_hole();
+//    translate([0, gear_len/2 - bearing_d, 0])
+//    bearing_hole();
 // belt gear wheel master    
-    translate([0, gear_len/2 - 2.5*bearing_d, 0])
+    translate([0, gear_len/2 - 1.5*bearing_d, 0])
     bearing_hole();
 // belt gear wheel slave    
     translate([0, -gear_len/2 + 3*bearing_d, 0])
@@ -103,12 +112,26 @@ module bearing_hole() {
     cylinder(h = 2*gearbox_wall, d = bearing_d, $fn = 32, center = true);
 }
 
+module servo_holes() {
+    translate([0, 0, gear_height/2 - d_screw_m3])
+    rotate([0, 90, 0])
+    cylinder(h = 2*gearbox_wall + 2*holder_thickness, d = d_screw_m3, $fn = 32, center = true);
+    mirror([0, 0, 1])
+    translate([0, 0, gear_height/2 - d_screw_m3])
+    rotate([0, 90, 0])
+    cylinder(h = 2*gearbox_wall + 2*holder_thickness, d = d_screw_m3, $fn = 32, center = true);
+}
+
 module servo_box() {
     translate([-gearbox_thickness, 0, 0])
     rotate([0, -90, 180])
     sg90();
-    translate([-5.5, -4.5, 0])
-    rotate([0, 90, 0])
-    rotate([0, 0, -90])
-    holder();
+    difference() {
+        translate([-11.5, -4.5, 0])
+        rotate([0, 90, 0])
+        rotate([0, 0, -90])
+        holder();
+        translate([-10, -10.3, 0])
+        servo_holes();
+    }
 }

@@ -1,5 +1,6 @@
 
 $fn=32;
+
 d_screw_m2 = 2.6+0.3+0.2;
 d_screw_m3 = 3.6+0.3;
 d_side_hole = 1.6;
@@ -16,6 +17,25 @@ r_horn = 12.3+0.5;
   shift_y_hole = w_servo/2;
 
   shift_wc_block = 2.4;
+
+module init_holder_sizes() {
+d_screw_m2 = 2.6+0.3+0.2;
+d_screw_m3 = 3.6+0.3;
+d_side_hole = 1.6;
+r_horn = 12.3+0.5;
+  w_base=40;
+  h_base=3;
+  w_servo=12.1;
+  h_servo = 16 + 0.5;
+  wc_block = 16.5;
+  
+  w_left_edge = wc_block - w_servo;
+  shift_left_edge = w_servo/2 + w_left_edge/2;
+  shift_x_hole = shift_left_edge;
+  shift_y_hole = w_servo/2;
+
+  shift_wc_block = 2.4;
+}
 
 module holder() {
     difference(){
