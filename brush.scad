@@ -4,6 +4,7 @@
 
 use <servo_holder.scad>
 use <sg90.scad>
+use <servo_wheel.scad>
 
 gear_len = 80;
 gear_height = 18;
@@ -21,6 +22,9 @@ gearbox();
 
 translate([-5, gear_len/2 + 6.6, 0])
 servo_box();
+
+translate([5, gear_len/2 + 6.6, 5.5])
+wheel_kit();
 
 //translate([-40, 0, 0])
 //gearbox_wall_kit();
@@ -134,4 +138,9 @@ module servo_box() {
         translate([-10, -10.3, 0])
         servo_holes();
     }
+}
+
+module wheel_kit() {
+    rotate([0, -90, 0])
+    wheel1();
 }
