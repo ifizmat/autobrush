@@ -18,7 +18,7 @@ cap_width = bearing_d - 1;
 d_screw_m3 = 3.6+0.3;
 
 
-gearbox();
+// gearbox();
 
 translate([-5, gear_len/2 + 6.6, 0])
 servo_box();
@@ -32,7 +32,19 @@ wheel_kit();
 //cap_kit();
 
 // Servo holder
+//translate([gearbox_thickness/2, 0, 10])
+// bearing();
+gearbox_wall_kit();
 
+module bearing() {
+  difference() {    
+    rotate([0, 90, 0])
+    cylinder(h = gearbox_wall, d = bearing_d - 1, $fn = 32, center = true);
+
+    rotate([0, 90, 0])
+    cylinder(h = 2*gearbox_wall, d = d_screw_m3, $fn = 32, center = true);
+  }
+}
 
 module cap_kit() {
     translate([gearbox_thickness/2, 0, 0])
@@ -66,6 +78,19 @@ module gearbox_wall_kit() {
         gearbox_wall();
         holes_kit();
     }
+
+// bearing belt gear wheel master    
+    translate([0, gear_len/2 - 1.5*bearing_d, 0])
+    bearing();
+
+// bearing for belt gear wheel  slave    
+    translate([0, -gear_len/2 + 3*bearing_d, 0])
+    bearing();
+
+// brush bearing
+    translate([0, -gear_len/2 + bearing_d, 0])
+    bearing();
+
 }
 
 module holes_kit() {
@@ -95,6 +120,11 @@ module holes_kit() {
    
 }
 
+module bearing_hole() {
+    rotate([0, 90, 0])
+    cylinder(h = 2*gearbox_wall, d = bearing_d, $fn = 32, center = true);
+}
+
 module gearbox() {
     translate([gearbox_thickness/2, 0, 0])
     //gearbox_wall();
@@ -111,10 +141,6 @@ module gearbox_wall() {
     cube([gearbox_wall, gear_len, gear_height], true);
 }
 
-module bearing_hole() {
-    rotate([0, 90, 0])
-    cylinder(h = 2*gearbox_wall, d = bearing_d, $fn = 32, center = true);
-}
 
 module servo_holes() {
     translate([0, 0, gear_height/2 - d_screw_m3])
