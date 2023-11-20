@@ -17,14 +17,12 @@ cap_depth = gear_height/2 - bearing_d/2  + bearing_d/4;
 cap_width = bearing_d - 1;
 d_screw_m3 = 3.6+0.3;
 
+// Проушины моста
+len_lugs = 4 * d_screw_m3;
 
-// gearbox();
+// brush_kit();
 
-translate([-5, gear_len/2 + 6.6, 0])
-servo_box();
-
-translate([5, gear_len/2 + 6.6, 5.5])
-wheel_kit();
+cylinder(h = 2*gearbox_wall + 2*holder_thickness, d = d_screw_m3, $fn = 32, center = true);
 
 //translate([-40, 0, 0])
 //gearbox_wall_kit();
@@ -34,7 +32,7 @@ wheel_kit();
 // Servo holder
 //translate([gearbox_thickness/2, 0, 10])
 // bearing();
-gearbox_wall_kit();
+// gearbox_wall_kit();
 
 module bearing() {
   difference() {    
@@ -56,7 +54,7 @@ module cap_kit() {
     
 // Cap bridge.
     translate([0, 0, cap_depth/2 + gearbox_wall/2])
-    cube([gearbox_thickness + gearbox_wall, cap_width, gearbox_wall], true);    
+    cube([gearbox_thickness + gearbox_wall + len_lugs, cap_width, gearbox_wall], true);    
 }
 
 // cap
@@ -169,4 +167,14 @@ module servo_box() {
 module wheel_kit() {
     rotate([0, -90, 0])
     wheel1();
+}
+
+module brush_kit() {
+  gearbox();
+  
+  translate([-5, gear_len/2 + 6.6, 0])
+  servo_box();
+  
+  translate([5, gear_len/2 + 6.6, 5.5])
+  wheel_kit();
 }
