@@ -22,12 +22,22 @@ len_lugs = 4 * d_screw_m3;
 
 // brush_kit();
 
-cylinder(h = 2*gearbox_wall + 2*holder_thickness, d = d_screw_m3, $fn = 32, center = true);
+
 
 //translate([-40, 0, 0])
 //gearbox_wall_kit();
 //servo_holes();
-//cap_kit();
+
+cap_bridge_VER1();
+
+module cap_bridge_VER1() {
+translate([0, -gear_len/2 + bearing_d, gear_height/2 - cap_depth/2])
+cap_kit();
+gearbox_wall_kit();
+translate([0, -gear_len/2 + bearing_d, 0])
+translate([0, 0, - gear_height/2 - gearbox_wall/2])
+cube([gearbox_thickness + gearbox_wall + len_lugs, cap_width, gearbox_wall], true);
+}
 
 // Servo holder
 //translate([gearbox_thickness/2, 0, 10])
@@ -53,8 +63,17 @@ module cap_kit() {
     cap();
     
 // Cap bridge.
-    translate([0, 0, cap_depth/2 + gearbox_wall/2])
-    cube([gearbox_thickness + gearbox_wall + len_lugs, cap_width, gearbox_wall], true);    
+    difference() {
+      translate([0, 0, cap_depth/2 + gearbox_wall/2])
+      cube([gearbox_thickness + gearbox_wall + len_lugs, cap_width, gearbox_wall], true);
+
+      // holes
+      translate([(gearbox_thickness + gearbox_wall + len_lugs)/2 - 1.2*d_screw_m3, 0, cap_depth])
+      cylinder(h = 2*gearbox_wall + 2*holder_thickness, d = d_screw_m3, $fn = 32, center = true);
+      mirror([1, 0, 0])
+      translate([(gearbox_thickness + gearbox_wall + len_lugs)/2 - 1.2*d_screw_m3, 0, cap_depth])
+      cylinder(h = 2*gearbox_wall + 2*holder_thickness, d = d_screw_m3, $fn = 32, center = true);
+    }
 }
 
 // cap
