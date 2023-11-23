@@ -24,10 +24,16 @@ d_brush = 35;
 len_brush = 140;
 len_shaft_brush = len_brush + 20; 
 d_shaft_brush = d_screw_m3;
+d_rounded_bearing = 1;
 
-brush_kit();
+//brush_kit();
 
-
+// rounded bearing
+rotate([0, 90, 0])
+rotate_extrude(angle=360, $fn=64)
+translate([bearing_d/2 - d_rounded_bearing/2, 0, 0])
+circle(d = d_rounded_bearing, $fn=64);
+bearing();
 
 //translate([-40, 0, 0])
 //gearbox_wall_kit();
