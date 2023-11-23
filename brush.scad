@@ -20,15 +20,58 @@ d_screw_m3 = 3.6+0.3;
 // Проушины моста
 len_lugs = 4 * d_screw_m3;
 
-// brush_kit();
+d_brush = 35;
+len_brush = 140;
+len_shaft_brush = len_brush + 20; 
+d_shaft_brush = d_screw_m3;
+
+brush_kit();
 
 
 
 //translate([-40, 0, 0])
 //gearbox_wall_kit();
+//translate([0, -10, 0])
+//holder_bearing();
 //servo_holes();
 
-cap_bridge_VER1();
+// cap_bridge_VER1();
+// brush_assembly();
+
+
+module holder_bearing() {
+  difference() {
+    cube([3*gearbox_wall, 3*d_screw_m3, gear_height+2*d_screw_m3], true);
+  
+  // Holes for shaft  
+    cube([4*gearbox_wall, d_screw_m3, gear_height - d_screw_m3], true);
+    translate([0, 0, gear_height/2 - d_screw_m3/2])
+    rotate([0, 90, 0])
+    cylinder(h=5*gearbox_wall, d=d_screw_m3, center=true, $fn=32);
+    mirror([0, 0, 1])
+    translate([0, 0, gear_height/2 - d_screw_m3/2])
+    rotate([0, 90, 0])
+    cylinder(h=5*gearbox_wall, d=d_screw_m3, center=true, $fn=32);
+  // Hole for wall
+    translate([0, 0, -d_screw_m3/2-0.5])
+    cube([gearbox_wall, 2*bearing_d, gear_height+d_screw_m3+1], true);
+  }
+}
+
+module brush_assembly() {
+  brush();
+  brush_shaft();
+}
+
+module brush() {
+  rotate([0, 90, 0])
+  cylinder(d=d_brush, h=len_brush, center=true);
+}
+
+module brush_shaft() {
+  rotate([0, 90, 0])
+  cylinder(d=d_shaft_brush, h=len_shaft_brush, center=true);
+}
 
 module cap_bridge_VER1() {
 translate([0, -gear_len/2 + bearing_d, gear_height/2 - cap_depth/2])
@@ -98,16 +141,21 @@ module gearbox_wall_kit() {
 
 // bearing belt gear wheel master    
     translate([0, gear_len/2 - 1.5*bearing_d, 0])
-    bearing();
+    {
+      bearing();
+      holder_bearing();
+    }
 
 // bearing for belt gear wheel  slave    
     translate([0, -gear_len/2 + 3*bearing_d, 0])
-    bearing();
+    {
+      bearing();
+      holder_bearing();
+    }
 
 // brush bearing
     translate([0, -gear_len/2 + bearing_d, 0])
     bearing();
-
 }
 
 module holes_kit() {
@@ -189,6 +237,7 @@ module wheel_kit() {
 }
 
 module brush_kit() {
+
   gearbox();
   
   translate([-5, gear_len/2 + 6.6, 0])
