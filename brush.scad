@@ -28,9 +28,9 @@ len_lugs = 4 * d_screw_m3;
 
 d_rounded_bearing = 1;
 
-// brush_kit();
+brush_kit();
 // rounded_bearing()
-servo_box();
+// servo_box();
 module rounded_bearing() {
   rotate([0, 90, 0])
   rotate_extrude(angle=360, $fn=64)
@@ -57,7 +57,7 @@ module brush_kit() {
 
   gearbox();
   
-  translate([-5, gear_len/2 + 6.6, 0])
+  translate([-gearbox_width/2+5, gear_len/2 + 6.6, 0])
   servo_box();
   
   translate([0, -gear_len/2 + bearing_d, 0])
