@@ -26,14 +26,20 @@ len_shaft_brush = len_brush + 20;
 d_shaft_brush = d_screw_m3;
 d_rounded_bearing = 1;
 
-//brush_kit();
+brush_kit();
+// rounded_bearing()
+module rounded_bearing() {
+  rotate([0, 90, 0])
+  rotate_extrude(angle=360, $fn=64)
+  translate([bearing_d/2 - d_rounded_bearing/2, 0, 0])
+  circle(d = d_rounded_bearing, $fn=64);
+  bearing();
+}
 
-// rounded bearing
-rotate([0, 90, 0])
-rotate_extrude(angle=360, $fn=64)
-translate([bearing_d/2 - d_rounded_bearing/2, 0, 0])
-circle(d = d_rounded_bearing, $fn=64);
-bearing();
+// Servo holder
+//translate([gearbox_thickness/2, 0, 10])
+// bearing();
+// gearbox_wall_kit();
 
 //translate([-40, 0, 0])
 //gearbox_wall_kit();
@@ -42,8 +48,51 @@ bearing();
 //servo_holes();
 
 // cap_bridge_VER1();
-// brush_assembly();
+ 
 
+module brush_kit() {
+
+  gearbox();
+  
+  translate([-5, gear_len/2 + 6.6, 0])
+  servo_box();
+  
+  translate([5, gear_len/2 + 6.6, 5.5])
+  wheel_kit();
+  
+  brush_assembly();
+}
+
+module gearbox() {
+    translate([gearbox_thickness/2, 0, 0])
+    //gearbox_wall();
+    gearbox_wall_kit();
+    translate([0, -gear_len/2 + bearing_d, gear_height/2 - cap_depth/2])
+    cap_kit();
+    mirror([1, 0, 0])
+    translate([gearbox_thickness/2, 0, 0])
+    //gearbox_wall();
+    gearbox_wall_kit();
+}
+
+module servo_box() {
+    translate([-gearbox_thickness, 0, 0])
+    rotate([0, -90, 180])
+    sg90();
+    difference() {
+        translate([-11.5, -4.5, 0])
+        rotate([0, 90, 0])
+        rotate([0, 0, -90])
+        holder();
+        translate([-10, -10.3, 0])
+        servo_holes();
+    }
+}
+
+module wheel_kit() {
+    rotate([0, -90, 0])
+    wheel1();
+}
 
 module holder_bearing() {
   difference() {
@@ -65,7 +114,7 @@ module holder_bearing() {
 }
 
 module brush_assembly() {
-  brush();
+  #brush();
   brush_shaft();
 }
 
@@ -88,10 +137,6 @@ translate([0, 0, - gear_height/2 - gearbox_wall/2])
 cube([gearbox_thickness + gearbox_wall + len_lugs, cap_width, gearbox_wall], true);
 }
 
-// Servo holder
-//translate([gearbox_thickness/2, 0, 10])
-// bearing();
-// gearbox_wall_kit();
 
 module bearing() {
   difference() {    
@@ -196,17 +241,6 @@ module bearing_hole() {
     cylinder(h = 2*gearbox_wall, d = bearing_d, $fn = 32, center = true);
 }
 
-module gearbox() {
-    translate([gearbox_thickness/2, 0, 0])
-    //gearbox_wall();
-    gearbox_wall_kit();
-    translate([0, -gear_len/2 + bearing_d, gear_height/2 - cap_depth/2])
-    cap_kit();
-    mirror([1, 0, 0])
-    translate([gearbox_thickness/2, 0, 0])
-    //gearbox_wall();
-    gearbox_wall_kit();
-}
 
 module gearbox_wall() {
     cube([gearbox_wall, gear_len, gear_height], true);
@@ -223,32 +257,5 @@ module servo_holes() {
     cylinder(h = 2*gearbox_wall + 2*holder_thickness, d = d_screw_m3, $fn = 32, center = true);
 }
 
-module servo_box() {
-    translate([-gearbox_thickness, 0, 0])
-    rotate([0, -90, 180])
-    sg90();
-    difference() {
-        translate([-11.5, -4.5, 0])
-        rotate([0, 90, 0])
-        rotate([0, 0, -90])
-        holder();
-        translate([-10, -10.3, 0])
-        servo_holes();
-    }
-}
 
-module wheel_kit() {
-    rotate([0, -90, 0])
-    wheel1();
-}
 
-module brush_kit() {
-
-  gearbox();
-  
-  translate([-5, gear_len/2 + 6.6, 0])
-  servo_box();
-  
-  translate([5, gear_len/2 + 6.6, 5.5])
-  wheel_kit();
-}
