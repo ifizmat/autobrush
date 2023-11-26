@@ -5,6 +5,7 @@
 use <servo_holder.scad>
 use <sg90.scad>
 use <servo_wheel.scad>
+use <bearing.scad>
 
 d_screw_m3 = 3.6+0.3;
 
@@ -18,7 +19,7 @@ gear_height = 18;
 gearbox_width = len_shaft_brush;
 holder_thickness = 3;
 gearbox_wall = 5;
-bearing_d = 10;
+bearing_d = 14;
 
 cap_depth = gear_height/2 - bearing_d/2  + bearing_d/4; 
 cap_width = bearing_d - 1;
@@ -28,6 +29,10 @@ len_lugs = 4 * d_screw_m3;
 
 d_rounded_bearing = 1;
 
+brush_shaft();
+// master wheel
+rotate([0, 90, 0])
+cylinder(h = 10,d = 20, center=true, $fn=64);
 brush_kit();
 // rounded_bearing()
 // servo_box();
@@ -85,8 +90,10 @@ module gearbox_wall_kit() {
   // bearing belt gear wheel master    
   translate([0, gear_len/2 - 1.5*bearing_d, 0])
   {
-    bearing();
-    holder_bearing();
+    rotate([0, 90, 0])
+    bearing_rounded();
+    //bearing();
+    //holder_bearing();
   }
 
   // bearing for belt gear wheel  slave    
