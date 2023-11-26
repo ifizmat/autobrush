@@ -3,7 +3,6 @@ d_screw_m3 = 3.6+0.3;
 screwdriver_thick = 1.5;
 screwdriver_gap = 1.8 * d_screw_m3;
 
-gear_len = 80;
 gear_height = 18;
 gearbox_wall = 5;
 
@@ -21,8 +20,9 @@ if (h_tire < 0) {
 }    
 echo("h_tire: ", h_tire);
 
-//bearing_box();
-//bearing_rounded();
+bearing_box();
+bearing_rounded();
+translate([bearing_box_width, 0, 0])
 cutset_bearing_box();
 
 module cutset_bearing_box() {
