@@ -20,10 +20,14 @@ if (h_tire < 0) {
 }    
 echo("h_tire: ", h_tire);
 
+translate([0,0,2*bearing_box_thick])
 bearing_box();
-bearing_rounded();
-translate([bearing_box_width, 0, 0])
-cutset_bearing_box();
+linear_extrude(bearing_box_thick)
+    offset(delta=1.2*bearing_d/2, chamfer=true)
+    square(bearing_box_width-1.2*bearing_d, true);   
+//bearing_rounded();
+//translate([bearing_box_width, 0, 0])
+//cutset_bearing_box();
 
 module cutset_bearing_box() {
   difference() {
@@ -68,6 +72,15 @@ module bearing_box(){
   difference() {
     cube([bearing_box_width, bearing_box_height, bearing_box_thick], true);
     scale(0.95)
+    hole_bearing();
+  }
+}
+
+module bearing_box_chamfer(){
+  difference() {
+    linear_extrude(bearing_box_thick)
+    offset(delta=1.2*bearing_d/2, chamfer=true)
+    square(bearing_box_width-1.2*bearing_d, true);   scale(0.95)
     hole_bearing();
   }
 }
