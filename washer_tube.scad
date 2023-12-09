@@ -82,17 +82,23 @@ module tube_grooved() {
     }
 }
 
-module base() {
+module washer_base() {
   difference() {
     cylinder(d=18, h=2.5, center=true, $fn=64);
-    cylinder(d=7, h=5, center=true, $fn=64);
+    cylinder(d=d_tube-2*wall_thickness, h=5, center=true, $fn=64);
+    translate([0, 0, -2.5/2-0.1])
+    rotate_extrude($fn = 64)
+    translate([(d_tube-2*wall_thickness)/2-0.1, 0, 0])
+    section();
+    
   }
 }
 
 
+
 tube();
-//translate([0, 0, -2.5/2])
-//base();
+translate([0, 0, -2.5/2])
+washer_base();
 //tube_grooved();
 //tube_holed();
 //translate([0, 0, 0])
