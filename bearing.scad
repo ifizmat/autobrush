@@ -80,8 +80,9 @@ module bearing_box_chamfer(){
   difference() {
     linear_extrude(bearing_box_thick, center=true)
     offset(delta=1.2*bearing_d/2, chamfer=true)
-    square(bearing_box_width-1.2*bearing_d, true); scale(1.05)
-    //scale(0.95)
+    square(bearing_box_width-1.2*bearing_d, true); 
+    //scale(1.05)
+    scale(0.95)
     //scale(1.00)
     hole_bearing();
   }
